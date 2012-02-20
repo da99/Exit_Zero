@@ -9,8 +9,13 @@ Gem::Specification.new do |s|
   s.authors     = ["da99"]
   s.email       = ["i-hate-spam-45671204@mailinator.com"]
   s.homepage    = ""
-  s.summary     = %q{TODO: Write a gem summary}
-  s.description = %q{TODO: Write a gem description}
+  s.summary     = %q{Make sure your last process exited with 0.}
+  s.description = %q{
+    A simple method that raises Exit_Zero::Non_Zero
+    if $?.exitstatus is not zero.
+    Be sure to use the "posix-spawn" since almost everything 
+    else is just plain wrong when handling child processes.
+  }
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
@@ -24,5 +29,6 @@ Gem::Specification.new do |s|
   
   # s.rubyforge_project = "Exit_Zero"
   # specify any dependencies here; for example:
-  # s.add_runtime_dependency "rest-client"
+  s.add_runtime_dependency "Split_Lines"
+  s.add_runtime_dependency "posix-spawn"
 end
