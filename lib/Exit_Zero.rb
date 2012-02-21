@@ -4,41 +4,42 @@ require 'posix/spawn'
 
 def Exit_Zero cmd=:no_cmd, &blok
   
-  if cmd == :no_cmd
-    r = yield
-    Exit_Zero.check blok, r
-    r
+  both = cmd != :no_cmd && block_given?
+  raise ArgumentError, "Both command and block are not allowed." if both
+
+  if block_given?
+    cmd = blok
+    r = p = blok.call
+    msg = cmd
   else
-    raise ArgumentError, "Both command and block are not allowed." if block_given?
-    r = Exit_Zero::Result.new(POSIX::Spawn::Child.new(cmd))
-    Exit_Zero.check cmd, r.status
-    r
+    r = p = Exit_Zero::Child.new(cmd)
+    msg = p.err.strip.empty? ? cmd : p.err
   end
-  
+
+  (r = r.status) if r.respond_to?(:status)
+  raise(Exit_Zero::Unknown_Exit, msg.inspect) unless r.respond_to?(:exitstatus)
+  raise(Exit_Zero::Non_Zero, "#{r.exitstatus} => #{msg}") if r.exitstatus != 0
+
+  p
 end # === Exit_Zero
 
 class Exit_Zero
   
+  Non_Zero      = Class.new(RuntimeError)
+  Unknown_Exit  = Class.new(RuntimeError)
+  
   module Class_Methods
-    
-    def check cmd, r = :no_status
-      r = $? if !r.respond_to?(:exitstatus)
-      raise(Exit_Zero::Non_Zero, cmd) if r.exitstatus != 0
-    end
-    
   end # === Class_Methods
   
   extend Class_Methods
-
-  class Non_Zero < RuntimeError
-  end # === class Non_Zero
   
-  class Result
+  class Child
     module Base
       
-      attr_reader :child
-      def initialize child
-        @child = child
+      attr_reader :cmd, :child
+      def initialize cmd
+        @cmd = cmd
+        @child = POSIX::Spawn::Child.new(cmd)
       end
 
       def split_lines
@@ -55,6 +56,6 @@ class Exit_Zero
 
     end # === Base
     include Base
-  end # === Result
+  end # === Child
   
 end # === class Exit_Zero

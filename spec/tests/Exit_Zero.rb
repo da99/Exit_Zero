@@ -1,20 +1,3 @@
-describe "Exit_Zero::Result" do
-  
-  it "provides split_lines" do
-    r = Exit_Zero::Result.new(POSIX::Spawn::Child.new('ls -Al'))
-    r.split_lines.should == `ls -Al`.strip.split("\n")
-  end
-  
-  %w{ out err status }.each { |m|
-    it "sets :#{m} equal to Child##{m}" do
-      cmd = %q! ruby -e "puts 'a'; warn 'b'; exit(127);"!
-      target = POSIX::Spawn::Child.new(cmd)
-      Exit_Zero::Result.new(POSIX::Spawn::Child.new(cmd))
-      .send(m).should == target.send(m)
-    end
-  }
-  
-end # === Exit_Zero::Result
 
 describe "Exit_Zero 'cmd'" do
 
@@ -22,10 +5,11 @@ describe "Exit_Zero 'cmd'" do
     lambda {
       Exit_Zero 'uptimes'
     }.should.raise(Exit_Zero::Non_Zero)
+    .message.should == %!127 => uptimes!
   end
 
-  it "returns a Exit_Zero::Result" do
-    Exit_Zero('whoami').class.should.be == Exit_Zero::Result
+  it "returns a Exit_Zero::Child" do
+    Exit_Zero('whoami').class.should.be == Exit_Zero::Child
   end
 
   it "executes valid command" do
@@ -48,6 +32,14 @@ describe "Exit_Zero { }" do
         POSIX::Spawn::Child.new("uptimes")
       }
     }.should.raise(Exit_Zero::Non_Zero)
+  end
+  
+  it "raise Unknown_Exit if block return value does not respond to :status and :exitstatus" do
+    target = lambda { :a }
+    lambda {
+      Exit_Zero(&target)
+    }.should.raise(Exit_Zero::Unknown_Exit)
+    .message.should.match %r!#{Regexp.escape target.inspect}!
   end
   
 end # === Exit_Zero { }
