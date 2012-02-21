@@ -26,12 +26,17 @@ end # === Exit_Zero 'cmd'
 
 describe "Exit_Zero { }" do
   
-  it "raises Exit_Zero::Non_Zero if $?.exitstatus != 0" do
+  it "returns last value of the block" do
+    Exit_Zero{ POSIX::Spawn::Child.new("ls ~") }
+    .out.should. == `ls ~`
+  end
+
+  it "raises Exit_Zero::Non_Zero if return value has exitstatus != 0" do
+    b = lambda { POSIX::Spawn::Child.new("something_not_found") }
     lambda {
-      Exit_Zero { 
-        POSIX::Spawn::Child.new("uptimes")
-      }
+      Exit_Zero(&b)
     }.should.raise(Exit_Zero::Non_Zero)
+    .message.should == "127 => #{b.inspect}"
   end
   
   it "raise Unknown_Exit if block return value does not respond to :status and :exitstatus" do
