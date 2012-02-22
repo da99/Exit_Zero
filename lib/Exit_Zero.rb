@@ -2,9 +2,9 @@ require 'Exit_Zero/version'
 require 'Split_Lines'
 require 'posix/spawn'
 
-def Exit_Zero cmd=:no_cmd, &blok
+def Exit_Zero *cmd, &blok
   
-  both = cmd != :no_cmd && block_given?
+  both = !cmd.empty? && block_given?
   raise ArgumentError, "Both command and block are not allowed." if both
 
   if block_given?
@@ -12,8 +12,8 @@ def Exit_Zero cmd=:no_cmd, &blok
     r = p = blok.call
     msg = cmd
   else
-    r = p = Exit_Zero::Child.new(cmd)
-    msg = p.err.strip.empty? ? cmd : p.err
+    r = p = Exit_Zero::Child.new(*cmd)
+    msg = p.err.strip.empty? ? p.cmd : p.err
   end
 
   (r = r.status) if r.respond_to?(:status)
@@ -37,9 +37,9 @@ class Exit_Zero
     module Base
       
       attr_reader :cmd, :child
-      def initialize cmd
-        @cmd = cmd
-        @child = POSIX::Spawn::Child.new(cmd)
+      def initialize *cmd
+        @child = POSIX::Spawn::Child.new(*cmd)
+        @cmd = cmd.join(' ')
       end
 
       def split_lines

@@ -1,6 +1,11 @@
 
-describe "Exit_Zero 'cmd'" do
+describe "Exit_Zero *cmd" do
 
+  it "accepts the same arguments as POSIX::Spawn::Child" do
+    Exit_Zero("dc", :input=>'4 4 + p').out
+    .should == "8\n"
+  end
+  
   it "raises Exit_Zero::Non_Zero if command exits with non-zero" do
     lambda {
       Exit_Zero 'uptimes'
