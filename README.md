@@ -25,9 +25,12 @@ Useage
     require "Exit_Zero"
     
     Exit_Zero( 'uptime' )
+    Exit_Zero( 'ls', :input=>' /some/dir ')
+    Exit_Zero { system "uptime" }
     
     # The following raises an error.
     Exit_Zero( 'uptimess' )
+    Exit_Zero { `uptimesss` }
 
 Run Tests
 ---------
