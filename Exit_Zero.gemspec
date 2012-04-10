@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
   s.version     = Exit_Zero::VERSION
   s.authors     = ["da99"]
   s.email       = ["i-hate-spam-45671204@mailinator.com"]
-  s.homepage    = ""
+  s.homepage    = "https://github.com/da99/Exit_Zero"
   s.summary     = %q{Make sure your last process exited with 0.}
   s.description = %q{
     A simple method that raises Exit_Zero::Non_Zero

@@ -10,12 +10,12 @@ plain wrong when handling child processes.
 Installation
 ------------
 
-    gem 'Exit\_Zero'
+    gem 'Exit_Zero'
 
 Useage
 ------
 
-    require "Exit\_Zero"
+    require "Exit_Zero"
     
     Exit_Zero( 'uptime' )
     
