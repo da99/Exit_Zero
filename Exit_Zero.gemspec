@@ -9,13 +9,10 @@ Gem::Specification.new do |s|
   s.authors     = ["da99"]
   s.email       = ["i-hate-spam-45671204@mailinator.com"]
   s.homepage    = "https://github.com/da99/Exit_Zero"
-  s.summary     = %q{Make sure your last process exited with 0.}
+  s.summary     = %q{Make sure your last child process exited with 0.}
   s.description = %q{
-    A simple method that raises Exit_Zero::Non_Zero
-    if $?.exitstatus is not zero.
-    
-    Be sure to use the "posix-spawn" gem by Ryan Tomayko 
-    for more complex functionality.
+    A simple method that runs a child process and raises
+    Exit_Zero::Non_Zero if $?.exitstatus is not zero.
   }
 
   s.files         = `git ls-files`.split("\n")
