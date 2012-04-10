@@ -13,8 +13,9 @@ Gem::Specification.new do |s|
   s.description = %q{
     A simple method that raises Exit_Zero::Non_Zero
     if $?.exitstatus is not zero.
-    Be sure to use the "posix-spawn" since almost everything 
-    else is just plain wrong when handling child processes.
+    
+    Be sure to use the "posix-spawn" gem by Ryan Tomayko 
+    for more complex functionality.
   }
 
   s.files         = `git ls-files`.split("\n")
