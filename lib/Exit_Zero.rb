@@ -14,7 +14,9 @@ def Exit_Zero *cmd, &blok
   else
     r = p = Exit_Zero::Child.new(*cmd)
     msg = p.err.strip.empty? ? p.cmd : p.err
+    msg << " (command: #{cmd})"
   end
+
 
   (r = r.status) if r.respond_to?(:status)
   raise(Exit_Zero::Unknown_Exit, msg.inspect) unless r.respond_to?(:exitstatus)

@@ -10,7 +10,7 @@ describe "Exit_Zero *cmd" do
     lambda {
       Exit_Zero 'uptimes'
     }.should.raise(Exit_Zero::Non_Zero)
-    .message.should == %!127 => uptimes!
+    .message.should.match %r!127 => uptimes!
   end
 
   it "returns a Exit_Zero::Child" do
