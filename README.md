@@ -17,7 +17,7 @@ That is the easiest way to handle child processes
 Installation
 ------------
 
-    gem 'Exit_Zero'
+    gem install 'Exit_Zero'
 
 Useage
 ------
