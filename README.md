@@ -26,8 +26,14 @@ Implementation
 
 Exit\_Zero runs your command through bash:
 
-    your command: uptime
-    Final result: POSIX::Spawn::Child.new "bash -lc #{cmd.inspect}"
+    Exit_Zero "
+      cd ~/
+      pwd
+    "
+
+    # --> Your command is processed as:
+    str = str.split("\n").map(:strip).map(&:reject).join('&&')
+    "bash -lc #{str.inspect}"
 
 Exit\_Zero lives in one file. So if you have any questions, [here
 it is](https://github.com/da99/Exit\_Zero/blob/master/lib/Exit\_Zero.rb).
