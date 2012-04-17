@@ -25,6 +25,10 @@ def Exit_Zero *cmd, &blok
   p
 end # === Exit_Zero
 
+def Exit_0 *cmd, &blok
+  Exit_Zero *cmd, &blok
+end
+
 class Exit_Zero
   
   Non_Zero      = Class.new(RuntimeError)

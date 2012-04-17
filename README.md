@@ -43,14 +43,25 @@ Usage
 
     require "Exit_Zero"
     
-    Exit_Zero( 'uptime' )
-    Exit_Zero( 'ls', :input=>' /some/dir ')
+    Exit_Zero 'uptime'
+    Exit_Zero 'ls', :input=>' /some/dir '
     Exit_Zero { system "uptime" }
     
     # The following raises an error.
-    Exit_Zero( 'uptimess' )
-    Exit_Zero { `uptimesss` }
+    Exit_Zero 'uptimeSS'
+    Exit_Zero { `uptimeSSS` }
 
+    # Exit_0 and Exit_Zero are the same.
+    Exit_0 'uptime'
+    Exit_0 'grep a', :input=>"a \n b \n c"
+
+    # Get results from standard output, standard error.
+    Exit_0('uptime').out      # String is stripped.
+    Exit_0('uptimeSS').err    # String is stripped.
+    
+    Exit_0('uptime').raw_out  # Raw string, no :strip used.
+    Exit_0('uptime').raw_err  # Raw string, no :strip used.
+    
 Run Tests
 ---------
 
