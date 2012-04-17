@@ -5,13 +5,32 @@ Exit\_Zero
 A simple method that raises Exit\_Zero::Non\_Zero 
 if $?.exitstatus is not zero. 
 
-If you want other functionality, such as capturing 
-standard output/error, then you should use
-[posix-spawn](https://github.com/rtomayko/posix-spawn).
-That is the easiest way to handle child processes 
-(aka shelling out a command). 
-[Here are other alternatives](http://stackoverflow.com/questions/6338908/ruby-difference-between-exec-system-and-x-or-backticks).
+Don't like Exit\_Zero? Try:
 
+* [posix-spawn](https://github.com/rtomayko/posix-spawn).
+That is the easiest way to handle child processes 
+(aka shelling out). 
+* [POpen4](https://github.com/shairontoledo/popen4) Don't confuse it with regular popen4.
+* [Here are other alternatives](http://stackoverflow.com/questions/6338908/ruby-difference-between-exec-system-and-x-or-backticks).
+
+Windows
+------
+
+Use something else. Check the previous list above
+for other alternatives, 
+especialy [POpen4](https://github.com/shairontoledo/popen4),
+which is Windows and POSIX compatible.
+
+Implementation
+----
+
+Exit\_Zero runs your command through bash:
+
+    your command: uptime
+    Final result: POSIX::Spawn::Child.new "bash -lc #{cmd.inspect}"
+
+Exit\_Zero lives in one file. So if you have any questions, [here
+it is](https://github.com/da99/Exit\_Zero/blob/master/lib/Exit\_Zero.rb).
 
 
 Installation
@@ -19,7 +38,7 @@ Installation
 
     gem install Exit_Zero
 
-Useage
+Usage
 ------
 
     require "Exit_Zero"

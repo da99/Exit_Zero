@@ -32,7 +32,15 @@ describe "Exit_Zero *cmd" do
       cd ~/
       pwd
     !)
-    .out.should == "#{`cd ~/ && pwd`.strip}"
+    .out.should == `cd ~/ && pwd`.strip
+  end
+
+  it "ignores empty lines in a multi-line string" do
+    Exit_Zero(%!
+      cd ~/
+
+      pwd
+    !).out.should == `cd ~/ && pwd`.strip
   end
 
 end # === Exit_Zero 'cmd'
