@@ -1,7 +1,7 @@
 describe "Child.new" do
   
   it 'executes given string' do
-    Exit_Zero::Child.new("pwd").out.should == `pwd`
+    Exit_Zero::Child.new("pwd").raw_out.should == `pwd`
   end
   
 end # === Exit_Zero::Child
@@ -17,12 +17,13 @@ end # === Child#split_lines
 
 describe "Child delegate methods" do
   
-  %w{ out err status }.each { |m|
-    it "sets :#{m} equal to Child##{m}" do
+  %w{ raw_out raw_err status }.each { |m|
+    o_m = m.sub("raw_", '')
+    it "sets :#{m} equal to Child :#{o_m}" do
       cmd = %q! ruby -e "puts 'a'; warn 'b'; exit(127);"!
       target = POSIX::Spawn::Child.new(cmd)
       Exit_Zero::Child.new(cmd)
-      .send(m).should == target.send(m)
+      .send(m).should == target.send(o_m)
     end
   }
   

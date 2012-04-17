@@ -40,6 +40,21 @@ class Exit_Zero
       
       attr_reader :cmd, :child
       def initialize *cmd
+        if cmd[0].is_a?(String)
+          
+          if cmd[0]["\n"]
+            cmd[0] = begin
+                       cmd[0]
+                       .split("\n")
+                       .map(&:strip)
+                       .reject(&:empty?)
+                       .join(" && ") 
+                     end
+          end
+          
+          cmd[0] = "bash -lc #{cmd[0].inspect}"
+          
+        end
         @child = POSIX::Spawn::Child.new(*cmd)
         @cmd = cmd.join(' ')
       end
@@ -48,13 +63,21 @@ class Exit_Zero
         Split_Lines(child.out)
       end
 
-      %w{ out err status }.each { |m|
+      %w{ out err }.each { |m|
         eval %~
-          def #{m}
+          def raw_#{m}
             child.#{m}
+          end
+
+          def #{m}
+            child.#{m}.strip
           end
         ~
       }
+
+      def status
+        child.status
+      end
 
     end # === Base
     include Base
