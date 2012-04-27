@@ -8,11 +8,10 @@ Gem::Specification.new do |s|
   s.version     = Exit_Zero::VERSION
   s.authors     = ["da99"]
   s.email       = ["i-hate-spam-45671204@mailinator.com"]
-  s.homepage    = "https://github.com/da99/Exit_Zero"
-  s.summary     = %q{Make sure your last child process exited with 0.}
+  s.homepage    = "https://github.com/da99/Exit_0"
+  s.summary     = %q{Obsolete. Use 'Exit_0' gem instead.}
   s.description = %q{
-    A simple method that runs a child process and raises
-    Exit_Zero::Non_Zero if $?.exitstatus is not zero.
+    Obsolete. Use gem 'Exit_0' instead.
   }
 
   s.files         = `git ls-files`.split("\n")
@@ -27,6 +26,5 @@ Gem::Specification.new do |s|
   
   # s.rubyforge_project = "Exit_Zero"
   # specify any dependencies here; for example:
-  s.add_runtime_dependency "Split_Lines"
-  s.add_runtime_dependency "posix-spawn"
+  s.add_runtime_dependency "Exit_0"
 end
